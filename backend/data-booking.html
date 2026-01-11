@@ -1,0 +1,424 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Data Reservasi | BestCamp Admin</title>
+  
+  <!-- Fonts & Icons -->
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons+Outlined" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/admin-lte@3.2/dist/css/adminlte.min.css">
+  
+  <style>
+    /* --- CORE STYLE (SAMA DENGAN DASHBOARD) --- */
+    body { font-family: 'Poppins', sans-serif; background-color: #F8FAFC; color: #334155; }
+
+    /* 1. SIDEBAR MODERN & CLEAN */
+    .main-sidebar { background-color: #FFFFFF !important; box-shadow: 4px 0 25px rgba(0,0,0,0.03) !important; border-right: none; }
+    
+    /* LOGO FIX: Biru Oren & Geser ke Bawah */
+    .brand-link {
+        border-bottom: 1px solid #f1f5f9 !important;
+        padding: 1.8rem 0.5rem 1.2rem 0.5rem;
+        display: flex; align-items: center; justify-content: center;
+        transition: all 0.3s;
+    }
+    .brand-link .brand-image-xs {
+        width: 38px; height: 38px; background: #005596; border-radius: 10px;
+        display: flex; align-items: center; justify-content: center; color: white; flex-shrink: 0; font-size: 18px;
+        box-shadow: 0 4px 10px rgba(0, 85, 150, 0.2);
+    }
+    .brand-link .brand-text {
+        font-size: 1.2rem; margin-left: 12px; font-weight: 700; letter-spacing: 0.5px;
+    }
+    
+    .nav-sidebar .nav-item { margin-bottom: 8px; }
+    
+    /* SIDEBAR SYMMETRY UPGRADE */
+    .nav-sidebar .nav-link {
+        border-radius: 12px !important; color: #64748B !important; padding: 10px 16px; font-weight: 500;
+        transition: all 0.2s ease-in-out; display: flex; align-items: center; border: 1px solid transparent;
+    }
+    .nav-sidebar .nav-link i {
+        margin-right: 12px; font-size: 20px; width: 36px; height: 36px;
+        border-radius: 50%; background: #F8FAFC; display: flex; align-items: center; justify-content: center;
+        transition: all 0.3s; color: #64748B; box-shadow: 0 1px 2px rgba(0,0,0,0.05);
+    }
+    .nav-sidebar .nav-link:hover { background-color: #F1F5F9 !important; color: #005596 !important; transform: translateX(3px); }
+    .nav-sidebar .nav-link:hover i { background: #FFFFFF; color: #005596; box-shadow: 0 4px 10px rgba(0,0,0,0.08); }
+    
+    /* Active State (Lingkaran Hilang) */
+    .nav-sidebar .nav-link.active { background-color: #EFF6FF !important; color: #005596 !important; font-weight: 600; border: 1px solid #BFDBFE; }
+    .nav-sidebar .nav-link.active i { background: transparent !important; color: #005596 !important; box-shadow: none !important; font-size: 22px; }
+
+    /* MINIMIZED FIX */
+    body.sidebar-collapse .main-sidebar .nav-link { 
+        padding: 0 !important; width: 44px !important; height: 44px !important; margin: 0 auto 8px auto !important;
+        display: flex; align-items: center; justify-content: center; border-radius: 12px !important;
+    }
+    body.sidebar-collapse .main-sidebar .nav-link i { margin: 0 !important; width: 36px; height: 36px; box-shadow: none; background: transparent !important; }
+    body.sidebar-collapse .main-sidebar .nav-link p { display: none !important; }
+    body.sidebar-collapse .brand-link { padding: 1.5rem 0 !important; width: 100% !important; justify-content: center !important; }
+    body.sidebar-collapse .brand-text { display: none !important; }
+
+    /* NAVBAR SYMMETRY */
+    .main-header { background-color: transparent !important; border-bottom: none !important; padding: 1rem 1.5rem; }
+    .btn-circle-nav { width: 42px; height: 42px; border-radius: 50%; display: flex; align-items: center; justify-content: center; background: white; border: 1px solid #F1F5F9; box-shadow: 0 2px 5px rgba(0,0,0,0.02); color: #64748B; transition: all 0.2s; position: relative; }
+    .btn-circle-nav:hover { background: #F8FAFC; color: #005596; transform: translateY(-1px); box-shadow: 0 4px 10px rgba(0,0,0,0.05); }
+    .dropdown-menu-custom { border: none; border-radius: 16px; box-shadow: 0 10px 30px rgba(0,0,0,0.08); padding: 8px; margin-top: 12px !important; width: 280px; }
+    .dropdown-item-custom { padding: 12px 16px; border-radius: 10px; font-size: 0.9rem; color: #334155; transition: all 0.2s; display: flex; align-items: center; justify-content: center; }
+    .dropdown-item-custom:hover { background-color: #FFF1F2; color: #E11D48; }
+    .dropdown-header-custom { padding: 10px 16px; font-weight: 600; color: #0f172a; font-size: 0.85rem; border-bottom: 1px solid #f1f5f9; margin-bottom: 8px; }
+    .profile-pill { background: white; padding: 6px 6px 6px 16px; border-radius: 50px; border: 1px solid #F1F5F9; box-shadow: 0 2px 5px rgba(0,0,0,0.02); transition: all 0.2s; cursor: pointer; }
+    .profile-pill:hover { box-shadow: 0 4px 12px rgba(0,0,0,0.05); border-color: #e2e8f0; }
+
+    /* 2. PAGE CONTENT STYLES */
+    .content-wrapper { background-color: #F8FAFC !important; }
+    .card-modern { background: white; border-radius: 20px; border: 1px solid #F1F5F9; box-shadow: 0 2px 10px rgba(0, 0, 0, 0.02); overflow: hidden; }
+    
+    .table thead th { background-color: #F8FAFC; border-bottom: none; color: #64748B; font-weight: 600; font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.05em; padding: 1.2rem 1.5rem; }
+    .table tbody td { padding: 1.25rem 1.5rem; vertical-align: middle; border-bottom: 1px solid #F1F5F9; font-size: 0.9rem; color: #334155; font-weight: 500; }
+    .table tbody tr:hover td { background-color: #F8FAFC; }
+    
+    .badge-modern { padding: 6px 12px; border-radius: 8px; font-size: 0.75rem; font-weight: 600; }
+    .badge-blue { background: #EFF6FF; color: #005596; }
+    .badge-orange { background: #FFF7ED; color: #EA6C00; }
+    .badge-green { background: #ECFDF5; color: #059669; }
+
+    .btn-icon { width: 32px; height: 32px; border-radius: 8px; display: flex; align-items: center; justify-content: center; transition: all 0.2s; border: none; }
+    .btn-icon:hover { transform: scale(1.1); }
+    .btn-edit { background: #F1F5F9; color: #005596; }
+    .btn-delete { background: #FFF1F2; color: #E11D48; }
+    
+    .search-pill { background: #F8FAFC; border: 1px solid #E2E8F0; border-radius: 50px; padding-left: 20px; height: 40px; width: 250px; }
+    .search-pill:focus { background: white; border-color: #005596; outline: none; }
+    
+    /* Active Tab Style */
+    .nav-pills .nav-link.active {
+        background-color: #EFF6FF !important;
+        color: #005596 !important;
+        box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+    }
+  </style>
+</head>
+<body class="hold-transition sidebar-mini layout-fixed">
+<div class="wrapper">
+
+  <!-- Navbar Updated -->
+  <nav class="main-header navbar navbar-expand navbar-light">
+    <ul class="navbar-nav">
+      <li class="nav-item">
+        <a class="nav-link btn-circle-nav" data-widget="pushmenu" href="#" role="button"><i class="fas fa-bars"></i></a>
+      </li>
+    </ul>
+    <ul class="navbar-nav ml-auto align-items-center gap-3">
+      <!-- Notification -->
+      <li class="nav-item dropdown mr-3">
+        <a class="nav-link btn-circle-nav p-0" data-toggle="dropdown" href="#">
+          <i class="material-icons-outlined" style="font-size: 22px;">notifications</i>
+          <span class="badge bg-danger rounded-circle position-absolute" id="notif-badge" style="top: 2px; right: 2px; width: 10px; height: 10px; padding: 0; display:none;"></span>
+        </a>
+        <div class="dropdown-menu dropdown-menu-right dropdown-menu-custom">
+            <span class="dropdown-header-custom">Notifikasi Terbaru</span>
+            <div id="notif-list"></div>
+            <div class="dropdown-divider"></div>
+            <a href="data-booking.html" class="dropdown-item-custom text-center text-xs font-weight-bold text-muted">Lihat Semua Data</a>
+        </div>
+      </li>
+      
+      <!-- Profile SIMPLIFIED -->
+      <li class="nav-item dropdown">
+        <div class="profile-pill d-flex align-items-center" data-toggle="dropdown" style="cursor: pointer;">
+            <div class="d-none d-md-block text-right mr-3">
+                <div class="text-xs font-weight-bold text-dark">Administrator</div>
+                <div class="text-xs text-muted" style="font-size: 10px; line-height: 1;">Online</div>
+            </div>
+            <img src="https://ui-avatars.com/api/?name=Admin+BestCamp&background=EA6C00&color=fff" class="rounded-circle shadow-sm" style="width: 34px; height: 34px;">
+        </div>
+        <div class="dropdown-menu dropdown-menu-right dropdown-menu-custom" style="width: 220px;">
+            <div class="px-3 py-3 mb-2 bg-white text-center">
+                <img src="https://ui-avatars.com/api/?name=Admin+BestCamp&background=EA6C00&color=fff" class="rounded-circle shadow-sm mb-2" style="width: 60px; height: 60px;">
+                <p class="text-sm font-weight-bold m-0 text-dark">Super Admin</p>
+                <small class="text-muted text-xs">admin@bestcamp.id</small>
+            </div>
+            <div class="dropdown-divider"></div>
+            <a href="#" onclick="logoutAdmin()" class="dropdown-item-custom text-danger text-center font-weight-bold py-3">
+                <i class="fas fa-sign-out-alt mr-2"></i> Keluar Sistem
+            </a>
+        </div>
+      </li>
+    </ul>
+  </nav>
+
+  <!-- Sidebar -->
+  <aside class="main-sidebar">
+    <!-- Brand Logo (Final Fix) -->
+    <a href="index.html" class="brand-link">
+      <div class="brand-image-xs">
+        <i class="fas fa-campground"></i>
+      </div>
+      <div class="brand-text">
+          <span style="color: #005596;">Best</span><span style="color: #EA6C00;">Camp</span>
+      </div>
+    </a>
+
+    <div class="sidebar px-3 mt-4">
+      <nav>
+        <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview">
+          <li class="nav-item"><a href="index.html" class="nav-link"><i class="nav-icon material-icons-outlined">dashboard</i><p>Dashboard</p></a></li>
+          <li class="nav-header text-uppercase text-xs font-weight-bold text-muted mt-3 mb-2 pl-2">Operasional</li>
+          <li class="nav-item"><a href="data-booking.html" class="nav-link active"><i class="nav-icon material-icons-outlined">calendar_today</i><p>Data Booking</p></a></li>
+          <li class="nav-item"><a href="form-booking.html" class="nav-link"><i class="nav-icon material-icons-outlined">add_circle_outline</i><p>Input Sewa</p></a></li>
+          <li class="nav-item mt-5 pt-3 border-top"><a href="#" onclick="logoutAdmin()" class="nav-link text-danger hover:bg-red-50"><i class="nav-icon material-icons-outlined">logout</i><p>Keluar</p></a></li>
+        </ul>
+      </nav>
+    </div>
+  </aside>
+
+  <div class="content-wrapper px-4 pb-5">
+    <div class="content-header">
+      <div class="row mb-4 align-items-end">
+          <div class="col-md-6">
+            <h1 class="m-0 font-weight-bold text-dark text-2xl">Data Reservasi</h1>
+            <p class="text-muted m-0 text-sm mt-1">Kelola seluruh data tamu BestCamp disini.</p>
+          </div>
+          <div class="col-md-6 text-md-right">
+             <a href="form-booking.html" class="btn text-white font-weight-bold rounded-pill px-4 py-2 shadow-sm" style="background-color: #005596;">
+                 <i class="fas fa-plus mr-2"></i> Reservasi Baru
+             </a>
+          </div>
+      </div>
+    </div>
+
+    <!-- Table Section -->
+    <section class="content mt-3">
+      <div class="card card-modern">
+        <!-- Toolbar -->
+        <div class="card-header bg-white border-0 py-4 px-4">
+            <div class="row align-items-center">
+                <div class="col-md-6">
+                    <ul class="nav nav-pills">
+                        <li class="nav-item">
+                            <a class="nav-link active rounded-pill font-weight-bold text-xs px-4" href="#" onclick="switchTab('all')" id="tab-all">Semua Data</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link rounded-pill font-weight-bold text-xs px-4 text-muted" href="#" onclick="switchTab('today')" id="tab-today">Check-In Hari Ini</a>
+                        </li>
+                    </ul>
+                </div>
+                <div class="col-md-6 text-md-right mt-3 mt-md-0">
+                    <div class="position-relative d-inline-block">
+                        <i class="fas fa-search position-absolute text-muted" style="left: 15px; top: 12px;"></i>
+                        <input type="text" id="searchInput" class="form-control search-pill bg-light border-0 pl-5" placeholder="Cari nama tamu..." onkeyup="searchTable()">
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="table-responsive">
+          <table class="table mb-0 w-100">
+            <thead>
+              <tr>
+                <th class="pl-4">Nama Tamu</th>
+                <th>Unit Sewa</th>
+                <th>Jadwal Check-In</th>
+                <th>Durasi</th>
+                <th>Total Biaya</th>
+                <th class="text-center">Aksi</th>
+              </tr>
+            </thead>
+            <tbody id="tableBody">
+                <!-- Javascript will render here -->
+            </tbody>
+          </table>
+        </div>
+        
+        <div class="card-footer bg-white border-0 py-4 px-4">
+            <div class="d-flex justify-content-between align-items-center">
+                <small class="text-muted" id="dataCount">Menampilkan 0 data</small>
+                <nav>
+                    <ul class="pagination pagination-sm m-0">
+                        <li class="page-item disabled"><a class="page-link border-0 rounded-circle mx-1" href="#"><i class="fas fa-chevron-left"></i></a></li>
+                        <li class="page-item active"><a class="page-link border-0 rounded-circle mx-1" href="#" style="background-color: #005596;">1</a></li>
+                        <li class="page-item"><a class="page-link border-0 rounded-circle mx-1 text-muted" href="#">2</a></li>
+                    </ul>
+                </nav>
+            </div>
+        </div>
+      </div>
+    </section>
+  </div>
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/js/bootstrap.bundle.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/admin-lte@3.2/dist/js/adminlte.min.js"></script>
+
+<script>
+    if (localStorage.getItem('isAdminLoggedIn') !== 'true') window.location.href = 'login.html';
+    
+    function logoutAdmin() {
+        if(confirm('Apakah Anda yakin ingin keluar dari sistem admin?')) {
+            localStorage.removeItem('isAdminLoggedIn');
+            window.location.href = 'login.html';
+        }
+    }
+
+    // --- LOGIKA NOTIFIKASI ---
+    function updateNotifications() {
+        const bookings = JSON.parse(localStorage.getItem('bookings_db')) || [];
+        const notifList = document.getElementById('notif-list');
+        const badge = document.getElementById('notif-badge');
+        notifList.innerHTML = '';
+        if (bookings.length > 0) {
+            badge.style.display = 'block';
+            bookings.slice(-3).reverse().forEach(b => {
+                notifList.innerHTML += `
+                    <a href="#" class="dropdown-item-custom" style="justify-content: flex-start;">
+                        <div class="d-flex align-items-start">
+                            <div class="rounded-circle bg-light d-flex align-items-center justify-content-center mr-2 text-primary" style="width:30px; height:30px; flex-shrink:0;"><i class="fas fa-user text-xs"></i></div>
+                            <div><p class="text-sm font-weight-bold m-0 text-dark">Booking Baru: ${b.nama}</p><p class="text-xs text-muted m-0">${b.tipeTenda}</p></div>
+                        </div>
+                    </a>`;
+            });
+        } else {
+            badge.style.display = 'none';
+            notifList.innerHTML = '<div class="text-center text-muted text-xs py-3">Tidak ada notifikasi baru</div>';
+        }
+    }
+    document.addEventListener('DOMContentLoaded', updateNotifications);
+
+    // --- LOGIKA TABLE & FILTER ---
+    let bookings = JSON.parse(localStorage.getItem('bookings_db')) || [];
+    let currentMode = 'all'; // 'all' atau 'today'
+
+    function renderTable(data) {
+        const tbody = document.getElementById('tableBody');
+        tbody.innerHTML = ''; 
+
+        if (data.length === 0) {
+            let msg = currentMode === 'today' ? 'Tidak ada jadwal check-in hari ini.' : 'Tidak ada data ditemukan.';
+            tbody.innerHTML = `
+                <tr>
+                    <td colspan="6" class="text-center py-5">
+                        <div class="py-4">
+                            <i class="material-icons-outlined text-gray-300 mb-3" style="font-size: 48px;">event_busy</i>
+                            <p class="text-muted m-0">${msg}</p>
+                        </div>
+                    </td>
+                </tr>`;
+            document.getElementById('dataCount').innerText = 'Menampilkan 0 data';
+            return;
+        }
+
+        document.getElementById('dataCount').innerText = `Menampilkan ${data.length} data`;
+
+        data.forEach((item, index) => {
+            let badgeClass = 'badge-blue';
+            let initialColor = '#005596';
+            let price = 350000;
+            
+            if(item.tipeTenda.includes('Safari')) { badgeClass = 'badge-orange'; initialColor = '#EA6C00'; price = 750000; }
+            if(item.tipeTenda.includes('Family')) { badgeClass = 'badge-green'; initialColor = '#059669'; price = 1200000; }
+
+            const total = price * parseInt(item.durasi);
+            
+            tbody.innerHTML += `
+                <tr>
+                    <td class="pl-4">
+                        <div class="d-flex align-items-center">
+                            <div class="rounded-circle d-flex align-items-center justify-content-center mr-3 text-white font-weight-bold shadow-sm" 
+                                 style="width:36px; height:36px; background-color: ${initialColor}; font-size: 13px;">
+                                ${item.nama.charAt(0).toUpperCase()}
+                            </div>
+                            <div>
+                                <div class="font-weight-bold text-dark text-sm">${item.nama}</div>
+                                <div class="text-xs text-muted">${item.jumlahOrang} Tamu</div>
+                            </div>
+                        </div>
+                    </td>
+                    <td><span class="badge-modern ${badgeClass}">${item.tipeTenda}</span></td>
+                    <td class="text-muted text-sm"><i class="far fa-calendar mr-2"></i>${item.checkIn}</td>
+                    <td class="font-weight-bold text-dark text-sm">${item.durasi} Malam</td>
+                    <td class="font-weight-bold text-dark text-sm">Rp ${total.toLocaleString('id-ID')}</td>
+                    <td class="text-center">
+                        <div class="d-flex justify-content-center gap-2">
+                            <button onclick="hapusData(${index})" class="btn-icon btn-delete" title="Hapus">
+                                <i class="fas fa-trash-alt text-xs"></i>
+                            </button>
+                        </div>
+                    </td>
+                </tr>
+            `;
+        });
+    }
+
+    // Initialize Default View
+    renderTable(bookings);
+
+    window.switchTab = function(mode) {
+        currentMode = mode;
+        const btnAll = document.getElementById('tab-all');
+        const btnToday = document.getElementById('tab-today');
+
+        // Reset Styles
+        btnAll.classList.remove('active', 'text-white');
+        btnAll.classList.add('text-muted');
+        btnAll.style.backgroundColor = 'transparent';
+        btnAll.style.color = '#64748B';
+
+        btnToday.classList.remove('active', 'text-white');
+        btnToday.classList.add('text-muted');
+        btnToday.style.backgroundColor = 'transparent';
+        btnToday.style.color = '#64748B';
+
+        // Apply Active Style
+        if(mode === 'all') {
+            btnAll.classList.add('active');
+            btnAll.classList.remove('text-muted');
+            btnAll.style.backgroundColor = '#EFF6FF';
+            btnAll.style.color = '#005596';
+            renderTable(bookings);
+        } else {
+            btnToday.classList.add('active');
+            btnToday.classList.remove('text-muted');
+            btnToday.style.backgroundColor = '#EFF6FF';
+            btnToday.style.color = '#005596';
+            
+            // Logic Filter Hari Ini (Format YYYY-MM-DD)
+            const d = new Date();
+            const today = d.getFullYear() + '-' + String(d.getMonth() + 1).padStart(2, '0') + '-' + String(d.getDate()).padStart(2, '0');
+            
+            const filtered = bookings.filter(b => b.checkIn === today);
+            renderTable(filtered);
+        }
+    }
+
+    window.hapusData = function(index) {
+        if(confirm('Hapus data reservasi ini?')) {
+            bookings.splice(index, 1); 
+            localStorage.setItem('bookings_db', JSON.stringify(bookings)); 
+            // Re-render sesuai tab aktif
+            window.switchTab(currentMode);
+        }
+    }
+
+    window.searchTable = function() {
+        const input = document.getElementById('searchInput').value.toLowerCase();
+        let sourceData = bookings;
+        
+        // Jika sedang di tab 'today', search hanya di data hari ini
+        if(currentMode === 'today') {
+            const d = new Date();
+            const today = d.getFullYear() + '-' + String(d.getMonth() + 1).padStart(2, '0') + '-' + String(d.getDate()).padStart(2, '0');
+            sourceData = bookings.filter(b => b.checkIn === today);
+        }
+
+        const filtered = sourceData.filter(item => item.nama.toLowerCase().includes(input));
+        renderTable(filtered);
+    }
+</script>
+</body>
+</html>

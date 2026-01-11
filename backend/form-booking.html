@@ -1,0 +1,372 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Input Sewa | BestCamp Admin</title>
+    
+    <!-- Fonts & Icons -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons+Outlined" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/admin-lte@3.2/dist/css/adminlte.min.css">
+    
+    <style>
+        /* --- CORE STYLE --- */
+        body { font-family: 'Poppins', sans-serif; background-color: #F8FAFC; color: #334155; }
+        .main-sidebar { background-color: #FFFFFF !important; box-shadow: 4px 0 25px rgba(0,0,0,0.03) !important; border-right: none; }
+        
+        /* LOGO FIX: Biru Oren & Geser ke Bawah */
+        .brand-link {
+            border-bottom: 1px solid #f1f5f9 !important;
+            padding: 1.8rem 0.5rem 1.2rem 0.5rem;
+            display: flex; align-items: center; justify-content: center;
+            transition: all 0.3s;
+        }
+        .brand-link .brand-image-xs {
+            width: 38px; height: 38px; background: #005596; border-radius: 10px;
+            display: flex; align-items: center; justify-content: center; color: white; flex-shrink: 0; font-size: 18px;
+            box-shadow: 0 4px 10px rgba(0, 85, 150, 0.2);
+        }
+        .brand-link .brand-text {
+            font-size: 1.2rem; margin-left: 12px; font-weight: 700; letter-spacing: 0.5px;
+        }
+        
+        .nav-sidebar .nav-item { margin-bottom: 8px; }
+        
+        /* SIDEBAR SYMMETRY UPGRADE */
+        .nav-sidebar .nav-link {
+            border-radius: 12px !important; color: #64748B !important; padding: 10px 16px; font-weight: 500;
+            transition: all 0.2s ease-in-out; display: flex; align-items: center; border: 1px solid transparent;
+        }
+        .nav-sidebar .nav-link i {
+            margin-right: 12px; font-size: 20px; width: 36px; height: 36px;
+            border-radius: 50%; background: #F8FAFC; display: flex; align-items: center; justify-content: center;
+            transition: all 0.3s; color: #64748B; box-shadow: 0 1px 2px rgba(0,0,0,0.05);
+        }
+        .nav-sidebar .nav-link:hover { background-color: #F1F5F9 !important; color: #005596 !important; transform: translateX(3px); }
+        .nav-sidebar .nav-link:hover i { background: #FFFFFF; color: #005596; box-shadow: 0 4px 10px rgba(0,0,0,0.08); }
+        
+        /* Active State - REVISI: Lingkaran Hilang */
+        .nav-sidebar .nav-link.active { background-color: #EFF6FF !important; color: #005596 !important; font-weight: 600; border: 1px solid #BFDBFE; }
+        .nav-sidebar .nav-link.active i { background: transparent !important; color: #005596 !important; box-shadow: none !important; font-size: 22px; }
+
+        /* MINIMIZED FIX */
+        body.sidebar-collapse .main-sidebar .nav-link { 
+            padding: 0 !important; width: 44px !important; height: 44px !important; margin: 0 auto 8px auto !important;
+            display: flex; align-items: center; justify-content: center; border-radius: 12px !important;
+        }
+        body.sidebar-collapse .main-sidebar .nav-link i { margin: 0 !important; width: 36px; height: 36px; box-shadow: none; background: transparent !important; }
+        body.sidebar-collapse .main-sidebar .nav-link p { display: none !important; }
+        body.sidebar-collapse .brand-link { padding: 1.5rem 0 !important; width: 100% !important; justify-content: center !important; }
+        body.sidebar-collapse .brand-text { display: none !important; }
+
+        /* NAVBAR SYMMETRY */
+        .main-header { background-color: transparent !important; border-bottom: none !important; padding: 1rem 1.5rem; }
+        .btn-circle-nav { width: 42px; height: 42px; border-radius: 50%; display: flex; align-items: center; justify-content: center; background: white; border: 1px solid #F1F5F9; box-shadow: 0 2px 5px rgba(0,0,0,0.02); color: #64748B; transition: all 0.2s; position: relative; }
+        .btn-circle-nav:hover { background: #F8FAFC; color: #005596; transform: translateY(-1px); box-shadow: 0 4px 10px rgba(0,0,0,0.05); }
+        .dropdown-menu-custom { border: none; border-radius: 16px; box-shadow: 0 10px 30px rgba(0,0,0,0.08); padding: 8px; margin-top: 12px !important; width: 280px; }
+        .dropdown-item-custom { padding: 12px 16px; border-radius: 10px; font-size: 0.9rem; color: #334155; transition: all 0.2s; display: flex; align-items: center; justify-content: center; }
+        .dropdown-item-custom:hover { background-color: #FFF1F2; color: #E11D48; }
+        .dropdown-header-custom { padding: 10px 16px; font-weight: 600; color: #0f172a; font-size: 0.85rem; border-bottom: 1px solid #f1f5f9; margin-bottom: 8px; }
+        .profile-pill { background: white; padding: 6px 6px 6px 16px; border-radius: 50px; border: 1px solid #F1F5F9; box-shadow: 0 2px 5px rgba(0,0,0,0.02); transition: all 0.2s; cursor: pointer; }
+        .profile-pill:hover { box-shadow: 0 4px 12px rgba(0,0,0,0.05); border-color: #e2e8f0; }
+
+        /* CONTENT STYLES */
+        .content-wrapper { background-color: #F8FAFC !important; }
+        
+        .card-modern {
+            background: white; border-radius: 20px; border: 1px solid #F1F5F9; box-shadow: 0 2px 10px rgba(0,0,0,0.02); padding: 30px;
+        }
+
+        .form-label-modern { font-size: 0.85rem; font-weight: 600; color: #64748B; margin-bottom: 8px; display: block; }
+        .form-control-modern { border-radius: 12px; height: 50px; border: 2px solid #F1F5F9; background-color: #F8FAFC; padding-left: 20px; transition: all 0.3s; color: #334155; font-weight: 500; }
+        .form-control-modern:focus { border-color: #005596; background-color: #fff; box-shadow: 0 0 0 4px rgba(0, 85, 150, 0.1); }
+
+        .unit-option { border: 2px solid #F1F5F9; border-radius: 16px; padding: 20px; cursor: pointer; transition: all 0.2s; background: white; position: relative; height: 100%; }
+        .unit-option:hover { border-color: #93C5FD; transform: translateY(-3px); box-shadow: 0 10px 20px rgba(0,0,0,0.05); }
+        .unit-option.selected { border-color: #005596; background-color: #EFF6FF; }
+        .unit-option.selected::after { content: '\f00c'; font-family: 'Font Awesome 5 Free'; font-weight: 900; position: absolute; top: 15px; right: 15px; color: #005596; }
+
+        .price-summary-card { background: #005596; color: white; border-radius: 20px; padding: 30px; position: relative; overflow: hidden; box-shadow: 0 15px 30px rgba(0, 85, 150, 0.15); }
+        .deco-circle { position: absolute; background: rgba(255,255,255,0.05); border-radius: 50%; }
+    </style>
+</head>
+<body class="hold-transition sidebar-mini layout-fixed">
+<div class="wrapper">
+
+    <!-- Navbar Updated -->
+    <nav class="main-header navbar navbar-expand navbar-light">
+        <ul class="navbar-nav">
+          <li class="nav-item">
+            <a class="nav-link btn-circle-nav" data-widget="pushmenu" href="#" role="button"><i class="fas fa-bars"></i></a>
+          </li>
+        </ul>
+        <ul class="navbar-nav ml-auto align-items-center gap-3">
+          <!-- Notification -->
+          <li class="nav-item dropdown mr-3">
+            <a class="nav-link btn-circle-nav p-0" data-toggle="dropdown" href="#">
+              <i class="material-icons-outlined" style="font-size: 22px;">notifications</i>
+              <span class="badge bg-danger rounded-circle position-absolute" id="notif-badge" style="top: 2px; right: 2px; width: 10px; height: 10px; padding: 0; display:none;"></span>
+            </a>
+            <div class="dropdown-menu dropdown-menu-right dropdown-menu-custom">
+                <span class="dropdown-header-custom">Notifikasi Terbaru</span>
+                <div id="notif-list"></div>
+                <div class="dropdown-divider"></div>
+                <a href="data-booking.html" class="dropdown-item-custom text-center text-xs font-weight-bold text-muted">Lihat Semua Data</a>
+            </div>
+          </li>
+          
+          <!-- Profile SIMPLIFIED -->
+          <li class="nav-item dropdown">
+            <div class="profile-pill d-flex align-items-center" data-toggle="dropdown" style="cursor: pointer;">
+                <div class="d-none d-md-block text-right mr-3">
+                    <div class="text-xs font-weight-bold text-dark">Administrator</div>
+                    <div class="text-xs text-muted" style="font-size: 10px; line-height: 1;">Online</div>
+                </div>
+                <img src="https://ui-avatars.com/api/?name=Admin+BestCamp&background=EA6C00&color=fff" class="rounded-circle shadow-sm" style="width: 34px; height: 34px;">
+            </div>
+            <div class="dropdown-menu dropdown-menu-right dropdown-menu-custom" style="width: 220px;">
+                <div class="px-3 py-3 mb-2 bg-white text-center">
+                    <img src="https://ui-avatars.com/api/?name=Admin+BestCamp&background=EA6C00&color=fff" class="rounded-circle shadow-sm mb-2" style="width: 60px; height: 60px;">
+                    <p class="text-sm font-weight-bold m-0 text-dark">Super Admin</p>
+                    <small class="text-muted text-xs">admin@bestcamp.id</small>
+                </div>
+                <div class="dropdown-divider"></div>
+                <a href="#" onclick="logoutAdmin()" class="dropdown-item-custom text-danger font-weight-bold py-3">
+                    <i class="fas fa-sign-out-alt mr-2"></i> Keluar Sistem
+                </a>
+            </div>
+          </li>
+        </ul>
+    </nav>
+
+    <!-- Sidebar -->
+    <aside class="main-sidebar">
+        <!-- Brand Logo (Final Fix) -->
+        <a href="index.html" class="brand-link">
+            <div class="brand-image-xs">
+                <i class="fas fa-campground"></i>
+            </div>
+            <div class="brand-text">
+                <span style="color: #005596;">Best</span><span style="color: #EA6C00;">Camp</span>
+            </div>
+        </a>
+        <div class="sidebar px-3 mt-4">
+            <nav>
+                <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview">
+                    <li class="nav-item"><a href="index.html" class="nav-link"><i class="nav-icon material-icons-outlined">dashboard</i><p>Dashboard</p></a></li>
+                    <li class="nav-header text-uppercase text-xs font-weight-bold text-muted mt-3 mb-2 pl-2">Operasional</li>
+                    <li class="nav-item"><a href="data-booking.html" class="nav-link"><i class="nav-icon material-icons-outlined">calendar_today</i><p>Data Booking</p></a></li>
+                    <li class="nav-item"><a href="form-booking.html" class="nav-link active"><i class="nav-icon material-icons-outlined">add_circle_outline</i><p>Input Sewa</p></a></li>
+                    <li class="nav-item mt-5 pt-3 border-top"><a href="#" onclick="logoutAdmin()" class="nav-link text-danger hover:bg-red-50"><i class="nav-icon material-icons-outlined">logout</i><p>Keluar</p></a></li>
+                </ul>
+            </nav>
+        </div>
+    </aside>
+
+    <div class="content-wrapper px-4 pb-5">
+        <div class="content-header">
+            <div class="row mb-4 align-items-end">
+                <div class="col-sm-6">
+                    <h1 class="m-0 font-weight-bold text-dark text-2xl">Buat Reservasi</h1>
+                    <p class="text-muted m-0 text-sm mt-1">Input data tamu yang datang langsung (Walk-in).</p>
+                </div>
+            </div>
+        </div>
+
+        <section class="content">
+            <form onsubmit="simpanData(event)">
+                <div class="row">
+                    <div class="col-lg-8">
+                        <div class="card-modern mb-4">
+                            <h5 class="font-weight-bold mb-4 text-dark text-lg border-bottom pb-3">1. Data Tamu</h5>
+                            <div class="row">
+                                <div class="col-12 mb-4">
+                                    <label class="form-label-modern">Nama Lengkap</label>
+                                    <input type="text" id="inputNama" class="form-control form-control-modern" placeholder="Masukkan nama tamu..." required>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-6 mb-4">
+                                    <label class="form-label-modern">Tanggal Check-In</label>
+                                    <input type="date" id="inputCheckIn" class="form-control form-control-modern" required>
+                                </div>
+                                <div class="col-md-6 mb-4">
+                                    <label class="form-label-modern">Durasi Menginap</label>
+                                    <div class="input-group">
+                                        <input type="number" id="inputDurasi" class="form-control form-control-modern" min="1" value="1" onchange="updateTotal()" onkeyup="updateTotal()">
+                                        <div class="input-group-append">
+                                            <span class="input-group-text bg-transparent border-0 font-weight-bold text-muted ml-2" style="line-height: 50px;">Malam</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="card-modern">
+                            <h5 class="font-weight-bold mb-4 text-dark text-lg border-bottom pb-3">2. Pilih Tipe Unit</h5>
+                            
+                            <div class="row mb-4">
+                                <div class="col-md-4 mb-3">
+                                    <div class="unit-option" id="opt-dome" onclick="selectUnit('Standard Dome', 350000, 'opt-dome')">
+                                        <div class="mb-3 text-center">
+                                            <div class="d-inline-flex align-items-center justify-content-center rounded-circle" style="width:50px; height:50px; background:#EFF6FF; color:#005596;">
+                                                <i class="fas fa-campground text-xl"></i>
+                                            </div>
+                                        </div>
+                                        <h6 class="font-weight-bold text-center text-dark">Dome</h6>
+                                        <p class="text-xs text-muted text-center mb-2">Max 3 Orang</p>
+                                        <div class="font-weight-bold text-center" style="color:#005596;">Rp 350rb</div>
+                                    </div>
+                                </div>
+                                <div class="col-md-4 mb-3">
+                                    <div class="unit-option" id="opt-safari" onclick="selectUnit('Safari Glamping', 750000, 'opt-safari')">
+                                        <div class="mb-3 text-center">
+                                            <div class="d-inline-flex align-items-center justify-content-center rounded-circle" style="width:50px; height:50px; background:#FFF7ED; color:#EA6C00;">
+                                                <i class="fas fa-tent text-xl"></i>
+                                            </div>
+                                        </div>
+                                        <h6 class="font-weight-bold text-center text-dark">Safari</h6>
+                                        <p class="text-xs text-muted text-center mb-2">Max 4 Orang</p>
+                                        <div class="font-weight-bold text-center" style="color:#EA6C00;">Rp 750rb</div>
+                                    </div>
+                                </div>
+                                <div class="col-md-4 mb-3">
+                                    <div class="unit-option" id="opt-cabin" onclick="selectUnit('Family Cabin', 1200000, 'opt-cabin')">
+                                        <div class="mb-3 text-center">
+                                            <div class="d-inline-flex align-items-center justify-content-center rounded-circle" style="width:50px; height:50px; background:#ECFDF5; color:#059669;">
+                                                <i class="fas fa-home text-xl"></i>
+                                            </div>
+                                        </div>
+                                        <h6 class="font-weight-bold text-center text-dark">Cabin</h6>
+                                        <p class="text-xs text-muted text-center mb-2">Max 6 Orang</p>
+                                        <div class="font-weight-bold text-center" style="color:#059669;">Rp 1.2jt</div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <input type="hidden" id="selectedUnitName" required>
+                            <input type="hidden" id="selectedUnitPrice">
+
+                            <div class="mb-2">
+                                <label class="form-label-modern">Jumlah Tamu</label>
+                                <input type="number" id="inputOrang" class="form-control form-control-modern w-50" min="1" max="10" placeholder="0">
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-lg-4 mt-4 mt-lg-0">
+                        <div class="price-summary-card sticky-top" style="top: 20px;">
+                            <div class="deco-circle" style="width: 200px; height: 200px; top: -80px; right: -80px;"></div>
+                            
+                            <h5 class="font-weight-bold mb-4 position-relative">Ringkasan Biaya</h5>
+                            
+                            <div class="d-flex justify-content-between mb-3 position-relative border-bottom border-light pb-3" style="border-color: rgba(255,255,255,0.2) !important;">
+                                <span class="text-white-50 text-sm">Unit</span>
+                                <span class="font-weight-bold" id="summaryUnit">-</span>
+                            </div>
+                            
+                            <div class="d-flex justify-content-between mb-2 position-relative">
+                                <span class="text-white-50 text-sm">Harga/Malam</span>
+                                <span class="font-weight-bold" id="summaryPrice">Rp 0</span>
+                            </div>
+                            <div class="d-flex justify-content-between mb-4 position-relative">
+                                <span class="text-white-50 text-sm">Durasi</span>
+                                <span class="font-weight-bold"><span id="summaryDuration">1</span> Malam</span>
+                            </div>
+                            
+                            <div class="p-3 rounded mb-4 position-relative" style="background: rgba(0,0,0,0.2);">
+                                <div class="d-flex justify-content-between align-items-center">
+                                    <span class="text-sm">Total Bayar</span>
+                                    <span class="text-xl font-weight-bold text-warning" id="summaryTotal">Rp 0</span>
+                                </div>
+                            </div>
+
+                            <button type="submit" class="btn btn-warning btn-block font-weight-bold py-3 shadow-lg position-relative border-0" style="border-radius: 12px; color: #fff; background-color: #EA6C00;">
+                                <i class="fas fa-check-circle mr-2"></i> Konfirmasi Booking
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </section>
+    </div>
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/js/bootstrap.bundle.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/admin-lte@3.2/dist/js/adminlte.min.js"></script>
+
+<script>
+    if (localStorage.getItem('isAdminLoggedIn') !== 'true') window.location.href = 'login.html';
+
+    function logoutAdmin() {
+        if(confirm('Apakah Anda yakin ingin keluar dari sistem admin?')) {
+            localStorage.removeItem('isAdminLoggedIn');
+            window.location.href = 'login.html';
+        }
+    }
+
+    // --- LOGIKA NOTIFIKASI ---
+    function updateNotifications() {
+        const bookings = JSON.parse(localStorage.getItem('bookings_db')) || [];
+        const notifList = document.getElementById('notif-list');
+        const badge = document.getElementById('notif-badge');
+        notifList.innerHTML = '';
+        if (bookings.length > 0) {
+            badge.style.display = 'block';
+            bookings.slice(-3).reverse().forEach(b => {
+                notifList.innerHTML += `
+                    <a href="#" class="dropdown-item-custom" style="justify-content: flex-start;">
+                        <div class="d-flex align-items-start">
+                            <div class="rounded-circle bg-light d-flex align-items-center justify-content-center mr-2 text-primary" style="width:30px; height:30px; flex-shrink:0;"><i class="fas fa-user text-xs"></i></div>
+                            <div><p class="text-sm font-weight-bold m-0 text-dark">Booking Baru: ${b.nama}</p><p class="text-xs text-muted m-0">${b.tipeTenda}</p></div>
+                        </div>
+                    </a>`;
+            });
+        } else {
+            badge.style.display = 'none';
+            notifList.innerHTML = '<div class="text-center text-muted text-xs py-3">Tidak ada notifikasi baru</div>';
+        }
+    }
+    document.addEventListener('DOMContentLoaded', updateNotifications);
+
+    document.getElementById('inputCheckIn').valueAsDate = new Date();
+
+    function selectUnit(name, price, elementId) {
+        document.querySelectorAll('.unit-option').forEach(el => el.classList.remove('selected'));
+        document.getElementById(elementId).classList.add('selected');
+        document.getElementById('selectedUnitName').value = name;
+        document.getElementById('selectedUnitPrice').value = price;
+        document.getElementById('summaryUnit').innerText = name;
+        document.getElementById('summaryPrice').innerText = 'Rp ' + price.toLocaleString('id-ID');
+        updateTotal();
+    }
+
+    function updateTotal() {
+        const price = parseInt(document.getElementById('selectedUnitPrice').value) || 0;
+        const duration = parseInt(document.getElementById('inputDurasi').value) || 1;
+        const total = price * duration;
+        document.getElementById('summaryDuration').innerText = duration;
+        document.getElementById('summaryTotal').innerText = 'Rp ' + total.toLocaleString('id-ID');
+    }
+
+    function simpanData(event) {
+        event.preventDefault();
+        const unitName = document.getElementById('selectedUnitName').value;
+        if(!unitName) { alert('Silakan pilih tipe unit terlebih dahulu!'); return; }
+        const bookings = JSON.parse(localStorage.getItem('bookings_db')) || [];
+        bookings.push({
+            nama: document.getElementById('inputNama').value,
+            checkIn: document.getElementById('inputCheckIn').value,
+            durasi: document.getElementById('inputDurasi').value,
+            tipeTenda: unitName,
+            jumlahOrang: document.getElementById('inputOrang').value
+        });
+        localStorage.setItem('bookings_db', JSON.stringify(bookings));
+        if(confirm('Data Berhasil Disimpan!')) { window.location.href = 'data-booking.html'; }
+    }
+</script>
+</body>
+</html>
